@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="geo_retail_machine_view_form">
+            <field name="name">geoengine.demo.retail.machine.form</field>
+            <field name="model">geoengine.demo.automatic.retailing.machine</field>
+            <field name="arch" type="xml">
+                <form string="Retail Machine">  
+                <sheet>     
+                        <group>
+                        <div class="oe_title">
+                            <label class="oe_edit_only" for="description" string="Description"/>
+                            <h1><field name="description"/></h1>
+                        </div>
+                        </group>
+
+                    <group>
+                          <group>
+                              <field name="image_visuel" widget="image" class="oe_avatar" width="128px" height="128px"/>
+                              <field name="segment"/>
+                              <field name="regisseur"/>
+                              <group string="Etat visuel">
+                                  <h4><field name="etat_visuel"/></h4>
+                              </group>
+                          </group>
+
+                          <group>
+                                <field name="type_1"/>
+                                <field name="format_1"/>
+                                <field name="secteur"/>
+                                <field name="localisation"/>
+                                <field name="ville"/>
+                                <field name="date_refresh"/>
+                                <field name="societe"/>
+                                <field name="domaine"/>
+                          </group>
+                    </group>
+                    <group>
+                            <group string="Etat support">
+                                  <h4><field name="etat_support"/></h4>
+                            </group>
+
+                            <group string="Etat de production">
+                                  <h4><field name="etat_production"/></h4>
+                            </group>
+                    </group>
+                    <notebook>
+                        <page string="Carte">
+                            <field name="the_point" widget="geo_edit_map"/>
+                        </page>
+                        <page string="Vue de pres">
+                            <field name="image_pre" widget="image" width="1024px" height="768px"/>
+                        </page>
+
+                        <page string="Vue de loin">
+                            <field name="image_loin" widget="image" width="1024px" height="768px"/>
+                        </page>
+
+                        <page string="Satelite">
+                        </page>
+
+                        <page string="Prix">
+                              <group>
+                                    <field name="prix_loc"/>
+                                    <field name="prix_taxe"/>
+                                    <field name="prix_prod"/>
+                              </group>
+                        </page>
+                        <page string="Ancien visuel">
+                            <field name="ancien_visuel">
+                                    <tree editable="bottom">
+                                        <field name="ancien_description"/>
+                                        <field name="date_debut"/>
+                                        <field name="date_fin"/>
+                                        <field name="lien_image" widget="url"/>
+                                        <field name="nouveau_description"/>
+                                    </tree>
+                            </field>
+                        </page>
+                        <page string="Suivie">
+                            <group>
+                                <field name="icon"/>
+                                <field name="date_suivie_debut"/>
+                                <field name="date_suivie_fin"/>
+                                    <div class="oe_button_box" name="button_box">
+                                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                        <field name="active" widget="boolean_button"
+                                                options='{"terminology": "archive"}'/>
+                                        </button>
+                                    </div>
+                            </group>
+                        </page> 
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="geo_retail_machine_view_search">
+            <field name="name">geoengine.demo.retail.machine.search</field>
+            <field name="model">geoengine.demo.automatic.retailing.machine</field>
+            <field name="arch" type="xml">
+                <tree string="Search Retail Machine">
+                        <field name="segment"/>
+                        <field name="description"/>
+                        <field name="format_1"/>
+                        <field name="ville"/>
+                        <field name="secteur"/>
+                        <field name="localisation"/>
+                        <field name="regisseur"/>
+                        <field name="type_1"/>
+                        <field name="date_refresh"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="geo_retail_machine_view_recherche">
+                <field name="name">geoengine.demo.retail.machine.search</field>
+                <field name="model">geoengine.demo.automatic.retailing.machine</field>
+                <field name="arch" type="xml">
+                    <search>
+                            <field name="description"/>
+                            <field name="segment"/>
+                            <field name="regisseur"/>
+                            <field name="format_1"/>
+                            <field name="secteur"/>
+                            <field name="ville"/>
+                            <field name="societe"/>
+                            <field name="domaine"/>
+                            <field name="etat_visuel"/>
+                            <field name="etat_support"/>
+                            <filter name="star" string="STAR" domain="[('societe','=','STAR')]"/>
+                            <separator/>
+                            <filter name="panneaux" string="PANNEAUX" domain="[('type_1','=','Panneaux')]"/>
+                            <filter name="point_de_vente" string="POINT DE VENTE" domain="[('type_1','=','Point de vente')]"/>
+                            <separator/>
+                            <filter name="date_depasse" string="Date depassé" domain="[('date_refresh' ,'&lt;',datetime.datetime.now())]"/>
+                            <filter string="Archivé" name="inactive" domain="[('active','=',False)]"/>
+                    </search>
+               </field>
+        </record>
+
+                <!--Vue tree avec les conditions de couleur-->
+        <record model="ir.ui.view" id="geo_retail_machine_view_tree">
+            <field name="name">geoengine.demo.retail.machine.tree</field>
+            <field name="model">geoengine.demo.automatic.retailing.machine</field>
+            <field name="arch" type="xml">
+                <tree colors="red:etat_visuel!='bon'; red:etat_support!='bon'; orange:date_refresh &lt; current_date">
+                        <field name="segment"/>
+                        <field name="description"/>
+                        <field name="format_1"/>
+                        <field name="secteur"/>
+                        <field name="localisation"/>
+                        <field name="regisseur"/>
+                        <field name="type_1"/>
+                        <field name="etat_visuel"/>
+                        <field name="etat_support"/>
+                        <field name="etat_production"/>
+                        <field name="date_refresh"/>
+                </tree>
+            </field>
+        </record>
+
+                        <!--VUE KANBAN-->
+
+        <record model="ir.ui.view" id="view_geoengine_kanban">
+            <field name="name">view.geoengine.kanban</field>
+            <field name="model">geoengine.demo.automatic.retailing.machine</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="color" widget="color"/>
+                    <field name="image_visuel"/>
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                                  oe_kanban_global_click_edit oe_semantic_html_override
+                                                  oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+
+                                <div class="oe_dropdown_kanban">
+                                    <!-- dropdown menu -->
+                                    <div class="oe_dropdown_toggle">
+                                        <i class="fa fa-bars fa-lg"/>
+                                        <ul class="oe_dropdown_menu">
+                                            <li>
+                                                <ul class="oe_kanban_colorpicker"
+                                                    data-field="color"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+
+                                <div class="o_kanban_image">
+                                        <img t-att-src="kanban_image('geoengine.demo.automatic.retailing.machine', 'image_visuel')" class="o_kanban_image oe_kanban_avatar" widget="image"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong><field name="description"/></strong>
+                                    <ul>
+                                        <li><u>Localisation</u>: <field name="localisation"></field></li>
+                                        <li><u>Secteur</u>     : <field name="secteur"></field></li>
+                                        <li><u>Societe</u>     : <field name="societe"></field></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="geo_retail_machine_view_pivot">
+            <field name="name">geoengine.demo.retail.machine.pivot</field>
+            <field name="model">geoengine.demo.automatic.retailing.machine</field>
+            <field name="arch" type="xml">
+                <pivot>
+                        <field name="secteur" type="col"/>
+                        <field name="type_1" type="row"/>
+                        <field name="prix_loc" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="geo_retail_machine_view_graph">
+            <field name="name">Graphique</field>
+            <field name="model">geoengine.demo.automatic.retailing.machine</field>
+            <field name="arch" type="xml">
+                <graph string="Graphique">
+                        <field name="type_1" type="row"/>
+                        <field name="description"/>
+                </graph>
+            </field>
+        </record>
+
+
+
+
+        <record id="geoengine_view_retail_machine_action" model="ir.actions.act_window">
+            <field name="name">CARTOGRAPHIE</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">geoengine.demo.automatic.retailing.machine</field>
+            <field name="view_mode">geoengine</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="geo_retail_machine_view_tree"/>
+        </record>
+
+        <record id="geoengine_view_retail_machine_action_kanban" model="ir.actions.act_window">
+              <field name="name">LISTE DES SITES</field>
+              <field name="type">ir.actions.act_window</field>
+              <field name="res_model">geoengine.demo.automatic.retailing.machine</field>
+              <field name="view_mode">kanban,form</field>
+              <field name="view_type">form</field>
+              <field name="view_id" ref="view_geoengine_kanban"/>
+        </record>
+
+        <record id="geoengine_view_retail_machine_action_liste" model="ir.actions.act_window">
+              <field name="name">GESTION DES PRODUCTIONS</field>
+              <field name="type">ir.actions.act_window</field>
+              <field name="res_model">geoengine.demo.automatic.retailing.machine</field>
+              <field name="view_mode">tree,form</field>
+              <field name="view_type">form</field>
+              <field name="view_id" ref="geo_retail_machine_view_tree"/>
+        </record>
+
+        <record id="geoengine_view_retail_machine_action_tableau" model="ir.actions.act_window">
+              <field name="name">VUE TCD</field>
+              <field name="type">ir.actions.act_window</field>
+              <field name="res_model">geoengine.demo.automatic.retailing.machine</field>
+              <field name="view_mode">pivot,form,graph</field>
+              <field name="view_type">form</field>
+              <field name="view_id" ref="geo_retail_machine_view_pivot"/>
+              <field name="context">{'search_default_type_1':'Panneaux'}</field>
+        </record>
+
+
+        <menuitem name="AFFICHAGE" id="geoengine_demo_menu" groups="base_geoengine.group_geoengine_user"
+          web_icon="base_geoengine_demo,images/map.png" web_icon_hover="base_geoengine_demo,images/map-hover.png"/>
+
+        <menuitem name="Geolocalisation" id="geoengine_demo_retail_menu" parent="geoengine_demo_menu" groups="base_geoengine.group_geoengine_user,base_geoengine.group_geoengine_admin"/>
+
+        <menuitem name="Vue carte" id="geoengine_retail_machine_menu" action="geoengine_view_retail_machine_action" parent="geoengine_demo_retail_menu" groups="base_geoengine.group_geoengine_user,base_geoengine.group_geoengine_admin"/>
+
+        <menuitem name="Liste des sites" id="geoengine_retail_machine_menu_kanban" action="geoengine_view_retail_machine_action_kanban" parent="geoengine_demo_retail_menu" groups="base_geoengine.group_geoengine_user,base_geoengine.group_geoengine_admin"/>
+
+
+        <menuitem name="Gestion des productions" id="geoengine_retail_machine_menu_liste" action="geoengine_view_retail_machine_action_liste" parent="geoengine_demo_retail_menu" groups="base_geoengine.group_geoengine_user,base_geoengine.group_geoengine_admin"/>
+
+        <menuitem name="Vue tableau" id="geoengine_retail_machine_menu_tableau" action="geoengine_view_retail_machine_action_tableau" parent="geoengine_demo_retail_menu" groups="base_geoengine.group_geoengine_user,base_geoengine.group_geoengine_admin"/>
+
+        <record id="action_secteur" model="ir.actions.act_window">
+            <field name="name">SECTEUR</field>
+            <field name="res_model">dummy.zip</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,geoengine</field>
+            <field ref="dummy_zip_tree" name="view_id"/>
+        </record>
+
+        <menuitem name="Secteur" id="zip_secteur" parent="geoengine_demo_retail_menu" action="action_secteur" groups="base_geoengine.group_geoengine_user,base_geoengine.group_geoengine_admin"/>
+        <!-- GeoEngine views -->
+        <record id="ir_ui_view_retailmachineview0" model="ir.ui.view">
+            <field name="name">Retail machine view</field>
+            <field name="arch" type="xml">
+                <geoengine version="7.0">
+                    <field name="type_1"/>
+                    <field name="description"/>
+                    <field name="secteur"/>
+                    <field name="localisation"/>
+                    <field name="icon"/>
+                    <field name="name" select="1" invisible="True"/>
+                    <field name="total_sales" select="1" invisible="True"/>
+                    <field name="money_level" invisible="True"/>
+                    <field name="state" invisible="True"/>
+                </geoengine>
+            </field>
+            <field eval="16" name="priority"/>
+            <field name="model">geoengine.demo.automatic.retailing.machine</field>
+        </record>
+        <record id="geoengine_vector_layer_retailmachinebasicpoint0" model="geoengine.vector.layer">
+            <field name="geo_field_id" ref="base_geoengine_demo.field_geoengine_demo_automatic_retailing_machine_the_point"/>
+            <field name="name">Afficher</field>
+            <field eval="6" name="sequence"/>
+            <field name="view_id" ref="ir_ui_view_retailmachineview0"/>
+            <field name="geo_repr">basic</field>
+            <field eval="1" name="nb_class"/>
+            <field name="begin_color">#FF680A</field>
+        </record>
+        <record id="geoengine_raster_layer_retailmachinemapbox" model="geoengine.raster.layer">
+            <field name="raster_type">osm</field>
+            <field name="name">Mapbox</field>
+            <field name="view_id" ref="ir_ui_view_retailmachineview0"/>
+            <field eval="0" name="overlay"/>
+        </record>
+        <record id="geoengine_raster_layer_basic0" model="geoengine.raster.layer">
+            <field name="raster_type">d_wms</field>
+            <field name="name">basic</field>
+            <field name="url">vmap0.tiles.osgeo.org/wms/vmap0</field>
+            <field name="view_id" ref="ir_ui_view_retailmachineview0"/>
+            <field eval="1" name="overlay"/>
+        </record>
+    </data>
+</openerp>

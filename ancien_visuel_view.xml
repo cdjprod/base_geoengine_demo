@@ -1,0 +1,103 @@
+<openerp>
+    <data>
+                                  <!--ANCIEN VISUEL-->
+
+        <record model="ir.ui.view" id="ancien_visuel_form">
+            <field name="name">Ancien visuel</field>
+            <field name="model">ancien.visuel.photo</field>
+            <field name="arch" type="xml">
+                <form string="Ancien visuel">
+                    <sheet>
+                        <group>
+                            <field name="ancien_description"/>
+                            <field name="date_debut"/>
+                            <field name="date_fin"/>
+                            <field name="lien_image" widget="url"/>
+                            <field name="nouveau_description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="ancien_visuel_tree">
+            <field name="name">Ancien visuel</field>
+            <field name="model">ancien.visuel.photo</field>
+            <field name="arch" type="xml">
+                <tree string="Ancien visuel">
+                        <field name="ancien_description"/>
+                        <field name="date_debut"/>
+                        <field name="date_fin"/>
+                        <field name="lien_image" widget="url"/>
+                        <field name="nouveau_description"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="ancien_visuel_search">
+            <field name="name">Ancien visuel</field>
+            <field name="model">ancien.visuel.photo</field>
+            <field name="arch" type="xml">
+                <search string="Recherche">
+                        <field name="ancien_description"/>
+                        <field name="date_debut"/>
+                        <field name="date_fin"/>
+                        <field name="lien_image"/>
+                </search>
+            </field>
+        </record>
+
+                                <!--TOUTES LES PHOTOS-->
+        <record model="ir.ui.view" id="all_photo_form">
+            <field name="name">Photo</field>
+            <field name="model">geoengine.demo.automatic.retailing.machine</field>
+            <field name="arch" type="xml">
+                <form string="Photo">
+                    <group>
+                        <field name="description"/>
+                    </group>
+                    <notebook>
+                        <page string="Vue de pres">
+                            <field name="image_pre" widget="image" width="1024px" height="1024px"/>
+                        </page>
+
+                        <page string="Vue de loin">
+                            <field name="image_loin" widget="image" width="1024px" height="1024px"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="all_photo_tree">
+            <field name="name">Liste des photos</field>
+            <field name="model">geoengine.demo.automatic.retailing.machine</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="all_photo_action" model="ir.actions.act_window">
+              <field name="name">PHOTO</field>
+              <field name="res_model">geoengine.demo.automatic.retailing.machine</field>
+              <field name="view_mode">tree,form</field>
+              <field name="view_type">form</field>
+              <field name="view_id" ref="all_photo_tree"/>
+        </record>
+
+        <record id="action_visuel_tree" model="ir.actions.act_window">
+            <field name="name">Ancien visuel</field>
+            <field name="res_model">ancien.visuel.photo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field ref="ancien_visuel_tree" name="view_id"/>
+        </record>
+
+        <menuitem name="Paramettre" id="ancien_photo" parent="geoengine_demo_menu"/>
+        <menuitem name="Ancien visuel" id="ancien_visuel_photo" action="action_visuel_tree" parent="ancien_photo"/>
+        <menuitem name="Tous les photos" id="all_photo" action="all_photo_action" parent="ancien_photo"/>
+
+    </data>
+</openerp>

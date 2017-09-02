@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="my_title" name="titre" inherit_id="web.layout">
+			<xpath expr="//title" position="replace">
+				<title>AGEN'C</title>
+			</xpath>
+		</template>
+		<template id="my_icon =" name="icon" inherit_id="web.layout">
+			<xpath expr="//link" position="replace">
+				<link type="image/x-icon" rel="shorcut icon" t-att-href="x_icon or '/base_geoengine_demo/static/src/icon/globe.ico'"/>
+			</xpath>
+		</template>
+		<template id="my_footer" name="footer" inherit_id="web.menu_secondary">
+			<xpath expr="//div[@class='oe_footer']" position="replace">
+				<div class="oe_footer">
+					Crée par <a href="http://agenc.bazarikely.com" target="_blank"><span style="color:red">AGEN'C</span></a>
+				</div>
+			</xpath>
+		</template>
+	</data>
+</odoo>
